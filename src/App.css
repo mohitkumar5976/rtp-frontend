@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.App {
+  text-align: center;
+}
+
+label {
+  display: block;
+}
+
+.input-field {
+  margin-bottom: 20px;
+}
+
+.hide {
+  display: none;
+}
+
+input, select {
+  border: 1px solid #000;
+}
+
+button {
+  background: #ddd;
+  padding: 5px 15px;
+  border-radius: 5px;
+  margin: 5px;
+}
