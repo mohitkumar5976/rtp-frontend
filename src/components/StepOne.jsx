@@ -9,6 +9,7 @@ function StepOne({
   setSrcFile,
   handleDataChange,
 }) {
+  const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
   const [checkPhoneNo, setCheckPhoneNo] = useState(false);
@@ -18,6 +19,7 @@ function StepOne({
     "g"
   );
   const handleFileChange = async (e) => {
+    setLoading(true);
     setCheckFile(true);
     setSrcFile({
       ...srcFile,
@@ -33,7 +35,6 @@ function StepOne({
       let params = convertApi.createParams();
       params.add("File", e.target.files[0]);
       let result = await convertApi.convert(ext, "png", params);
-      console.log(result);
       src = result.files[0].Url;
       ext = "png";
     }
@@ -44,6 +45,7 @@ function StepOne({
       ext: ext,
       loading: false,
     });
+    setLoading(false);
   };
 
   const handlePhoneNoValidation = (e) => {
@@ -136,7 +138,17 @@ function StepOne({
               </div>
             </div>
           </div>
-          <p className="text-sm mt-1 text-start">{srcFile.file.name}</p>
+          <div className="text-sm mt-1">
+            {loading ? (
+              <>
+                <div className="spinner-border w-5 h-5 mt-1" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </>
+            ) : (
+              <p className="text-start">{srcFile.file.name}</p>
+            )}
+          </div>
         </div>
 
         <button onClick={handleNextButton}>Next</button>
