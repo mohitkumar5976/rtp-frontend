@@ -185,6 +185,7 @@ function StepTwo({
   useEffect(() => {
     calculateTotal();
   }, [data]);
+  console.log(srcFile.src)
   return (
     <>
       {networkError ? (
