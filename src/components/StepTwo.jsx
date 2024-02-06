@@ -2,13 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Context } from "../context/context";
 import { useNavigate } from "react-router-dom";
-import { pdfjs } from "react-pdf";
 import PdfViewer from "./PdfViewer";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
 
 function StepTwo({
   currentStep,
