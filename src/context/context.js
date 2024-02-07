@@ -4,7 +4,6 @@ export const Context = createContext();
 
 const ContextProvider = ({ children }) => {
   const [sendingData, setSendingData] = useState({
-    phone: "",
     file: "",
     noOfPages: 0,
     grayOrColored: "",
@@ -15,6 +14,7 @@ const ContextProvider = ({ children }) => {
     payment_ID: "",
     amount: "",
   });
+  const [phoneNo, setPhoneNo] = useState("");
   const [loading, setLoading] = useState(false);
   const [networkError, setNetworkError] = useState(false);
   const [error, setError] = useState({
@@ -26,6 +26,8 @@ const ContextProvider = ({ children }) => {
   return (
     <Context.Provider
       value={{
+        phoneNo,
+        setPhoneNo,
         sendingData,
         setSendingData,
         loading,
