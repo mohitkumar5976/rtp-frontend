@@ -14,7 +14,6 @@ function StepTwo({
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState();
   const {
-    phoneNo,
     sendingData,
     setSendingData,
     setLoading,
