@@ -5,7 +5,7 @@ import axios from "axios";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 function StepThree() {
-  const { sendingData, networkError, setNetworkError } = useContext(Context);
+  const { sendingData, networkError, setNetworkError,phoneNo } = useContext(Context);
   const [paymentID, setPaymentID] = useState("");
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ function StepThree() {
     try {
       if (sendingData.payment_ID != "" && sendingData.order_ID != "") {
         const formData = new FormData();
-        formData.append("phoneNo", sendingData.phone);
+        formData.append("phoneNo", phoneNo);
         formData.append("noOfPages", sendingData.noOfPages);
         formData.append("pageSizeFormat", sendingData.pageSizeFormat);
         formData.append("grayOrColored", sendingData.grayOrColored);
