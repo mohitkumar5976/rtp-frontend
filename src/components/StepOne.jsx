@@ -57,9 +57,7 @@ function StepOne({
         setIsError(false);
       }, 500);
     }
-    handleDataChange("phone", e.target.value);
     setPhoneNo(e.target.value);
-
     setCheckPhoneNo(true);
   };
 
