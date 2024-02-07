@@ -75,7 +75,6 @@ function StepTwo({
       setTotal(price);
       setSendingData({
         file: srcFile.file,
-        phone: data.phone,
         noOfPages: data.noOfPages,
         pageSizeFormat: data.pageSizeFormat,
         grayOrColored: data.grayOrColored,
