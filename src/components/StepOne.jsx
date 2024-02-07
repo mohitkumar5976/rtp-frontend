@@ -1,6 +1,7 @@
 import ConvertApi from "convertapi-js";
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Context } from "../context/context";
 
 function StepOne({
   currentStep,
@@ -9,6 +10,7 @@ function StepOne({
   setSrcFile,
   handleDataChange,
 }) {
+  const { phoneNo, setPhoneNo } = useContext(Context);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
@@ -54,10 +56,10 @@ function StepOne({
       setTimeout(() => {
         setIsError(false);
       }, 500);
-    } else {
-      handleDataChange("phone", e.target.value);
-      setIsError(false);
     }
+    handleDataChange("phone", e.target.value);
+    setPhoneNo(e.target.value);
+
     setCheckPhoneNo(true);
   };
 
@@ -94,6 +96,7 @@ function StepOne({
             placeholder="Enter phone number"
             name="phone"
             id="phone"
+            value={phoneNo}
             maxLength={10}
             className="pl-2 form-control"
             onChange={handlePhoneNoValidation}
