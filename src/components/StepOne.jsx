@@ -1,7 +1,9 @@
 import ConvertApi from "convertapi-js";
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/context";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function StepOne({
   currentStep,
@@ -10,16 +12,23 @@ function StepOne({
   setSrcFile,
   handleDataChange,
 }) {
-  const { phoneNo, setPhoneNo } = useContext(Context);
+  const { phoneNo, setPhoneNo, setShopId, networkError, setNetworkError } =
+    useContext(Context);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
   const [checkPhoneNo, setCheckPhoneNo] = useState(false);
   const [checkFile, setCheckFile] = useState(false);
+  const [checkId, setCheckId] = useState(false);
+
+  const [idError, setIdError] = useState(false);
   const pattern = new RegExp(
     "(?:(?:\\+|0{0,2})91(\\s*[\\- ]\\s*)?|[0 ]?)?[789]\\d{9}|(\\d[ -]?){10}\\d",
     "g"
   );
+
+  const { id } = useParams();
+
   const handleFileChange = async (e) => {
     setLoading(true);
     setCheckFile(true);
@@ -62,18 +71,72 @@ function StepOne({
   };
 
   const handleNextButton = () => {
-    if (checkPhoneNo && checkFile) {
-      handleStepCounter(1);
+    if (checkId) {
+      if (checkPhoneNo && checkFile) {
+        handleStepCounter(1);
+      } else {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
+      }
     } else {
-      setError(true);
+      setIdError(true);
       setTimeout(() => {
-        setError(false);
+        setIdError(false);
       }, 2000);
     }
   };
 
+  const checkShopId = async () => {
+    try {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/api/v1/user/checkshopId`, {
+          shopId: id,
+        })
+        .then((res) => {
+          if (res.data.status === 200) {
+            setShopId(id);
+            setCheckId(true);
+          } else if (res.data.status === 404) {
+            setIdError(true);
+            setTimeout(() => {
+              setIdError(false);
+            }, 2000);
+          }
+        });
+    } catch (error) {
+      setNetworkError(true);
+      setTimeout(() => {
+        setNetworkError(false);
+      }, 2000);
+    }
+  };
+
+  useEffect(() => {
+    checkShopId();
+  }, [id]);
+
+
+
   return (
     <>
+      {networkError ? (
+        <div
+          className="alert alert-danger fixed z-10 top-0 w-full font-semibold text-sm md:text-md"
+          role="alert"
+        >
+          !! Server Problem !!
+        </div>
+      ) : null}
+      {idError ? (
+        <div
+          className="alert alert-danger fixed z-10 top-0 w-full font-semibold text-sm md:text-md"
+          role="alert"
+        >
+          !! Shop id doesn't exist !!
+        </div>
+      ) : null}
       {error ? (
         <div
           className="alert alert-danger fixed z-10 top-0 w-full font-semibold text-sm md:text-md"
