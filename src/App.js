@@ -9,7 +9,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/payment-success" element={<StepThree />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/:id" element={<Home />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </Router>
