@@ -5,14 +5,27 @@ import axios from "axios";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 function StepThree() {
-  const { sendingData, networkError, setNetworkError,phoneNo } = useContext(Context);
+  const {
+    sendingData,
+    networkError,
+    setNetworkError,
+    phoneNo,
+    setPhoneNo,
+    shopId,
+    setShopId,
+  } = useContext(Context);
   const [paymentID, setPaymentID] = useState("");
   const navigate = useNavigate();
 
   const saveData = async () => {
     try {
-      if (sendingData.payment_ID != "" && sendingData.order_ID != "") {
+      if (
+        sendingData.payment_ID != "" &&
+        sendingData.order_ID != "" &&
+        shopId !== ""
+      ) {
         const formData = new FormData();
+        formData.append("shopId", shopId);
         formData.append("phoneNo", phoneNo);
         formData.append("noOfPages", sendingData.noOfPages);
         formData.append("pageSizeFormat", sendingData.pageSizeFormat);
@@ -32,6 +45,8 @@ function StepThree() {
           })
           .then((res) => {
             setPaymentID(res.data.printableData.paymentId);
+            setPhoneNo("");
+            setShopId("");
           });
       } else {
         navigate("/");
