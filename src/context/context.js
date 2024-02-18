@@ -14,6 +14,7 @@ const ContextProvider = ({ children }) => {
     payment_ID: "",
     amount: "",
   });
+  const [shopId,setShopId] = useState("")
   const [phoneNo, setPhoneNo] = useState("");
   const [loading, setLoading] = useState(false);
   const [networkError, setNetworkError] = useState(false);
@@ -36,6 +37,7 @@ const ContextProvider = ({ children }) => {
         setError,
         networkError,
         setNetworkError,
+        shopId,setShopId
       }}
     >
       {children}
