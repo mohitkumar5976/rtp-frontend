@@ -20,7 +20,7 @@ function StepOne({
   const [checkPhoneNo, setCheckPhoneNo] = useState(false);
   const [checkFile, setCheckFile] = useState(false);
   const [checkId, setCheckId] = useState(false);
-
+  const [idPresent, setIdPresent] = useState(false);
   const [idError, setIdError] = useState(false);
   const pattern = new RegExp(
     "(?:(?:\\+|0{0,2})91(\\s*[\\- ]\\s*)?|[0 ]?)?[789]\\d{9}|(\\d[ -]?){10}\\d",
@@ -90,21 +90,25 @@ function StepOne({
 
   const checkShopId = async () => {
     try {
-      await axios
-        .post(`${process.env.REACT_APP_API_URL}/api/v1/user/checkshopId`, {
-          shopId: id,
-        })
-        .then((res) => {
-          if (res.data.status === 200) {
-            setShopId(id);
-            setCheckId(true);
-          } else if (res.data.status === 404) {
-            setIdError(true);
-            setTimeout(() => {
-              setIdError(false);
-            }, 2000);
-          }
-        });
+      if (id !== undefined) {
+        await axios
+          .post(`${process.env.REACT_APP_API_URL}/api/v1/user/checkshopId`, {
+            shopId: id,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setShopId(id);
+              setCheckId(true);
+            } else if (res.status === 404) {
+              setIdError(true);
+              setTimeout(() => {
+                setIdError(false);
+              }, 2000);
+            }
+          });
+      } else {
+        setIdPresent(true);
+      }
     } catch (error) {
       setNetworkError(true);
       setTimeout(() => {
@@ -117,10 +121,13 @@ function StepOne({
     checkShopId();
   }, [id]);
 
-
-
   return (
     <>
+      {idPresent ? (
+        <div className="min-h-screen flex justify-center items-center absolute w-full bg-white z-10">
+          <p className="md:text-3xl">Please Enter Valid Shop ID in the URL</p>
+        </div>
+      ) : null}
       {networkError ? (
         <div
           className="alert alert-danger fixed z-10 top-0 w-full font-semibold text-sm md:text-md"
