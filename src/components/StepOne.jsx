@@ -96,10 +96,12 @@ function StepOne({
             shopId: id,
           })
           .then((res) => {
-            if (res.status === 200) {
+            if (res.data.status === "200") {
               setShopId(id);
               setCheckId(true);
-            } else if (res.status === 404) {
+            }
+
+            if (res.data.status === "404") {
               setIdError(true);
               setTimeout(() => {
                 setIdError(false);
